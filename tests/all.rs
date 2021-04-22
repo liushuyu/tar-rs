@@ -1176,7 +1176,11 @@ fn tar_directory_containing_special_files() {
     // unfortunately, block device file cannot be created by non-root users
     // as a substitute, just test the file that exists on most Unix systems
     t!(env::set_current_dir("/dev/"));
-    t!(ar.append_path("loop0"));
+    if cfg!(linux) {
+        t!(ar.append_path("loop0"));
+    } else if cfg!(macos) {
+        t!(ar.append_path("disk0"));
+    }
     // CI systems seem to have issues with creating a chr device
     t!(ar.append_path("null"));
     t!(ar.finish());
