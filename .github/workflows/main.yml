@@ -30,6 +30,8 @@ jobs:
       run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
       shell: bash
     - run: cargo test
+      env:
+        RUST_BACKTRACE: 1
     - run: cargo test --no-default-features
 
   rustfmt:
